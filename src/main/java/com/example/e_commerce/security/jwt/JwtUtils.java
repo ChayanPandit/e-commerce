@@ -32,7 +32,7 @@ public class JwtUtils {
                 .toList();
 
         return Jwts.builder()
-                .setSubject((userPrincipal.getEmail()))
+                .setSubject(userPrincipal.getEmail())
                 .claim("id", userPrincipal.getId())
                 .claim("roles", roles)
                 .setIssuedAt(new Date())
