@@ -1,6 +1,6 @@
 package com.example.e_commerce.service.product;
 
-import com.example.e_commerce.exception.ProductNotFoundException;
+import com.example.e_commerce.exception.ResourceNotFoundException;
 import com.example.e_commerce.model.Category;
 import com.example.e_commerce.model.Product;
 import com.example.e_commerce.repository.CategoryRepository;
@@ -44,7 +44,8 @@ public class ProductService implements IProductService {
 
     @Override
     public Product getProductById(Long id) {
-        return productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Product not found"));
+        return productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
     }
 
     @Override
@@ -52,7 +53,7 @@ public class ProductService implements IProductService {
         return productRepository.findById(id)
                 .map(existingProduct -> updateExistingProduct(existingProduct, request))
                 .map(productRepository::save)
-                .orElseThrow(() -> new ProductNotFoundException("Product not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
     }
 
     private Product updateExistingProduct(Product existingProduct, ProductUpdateRequest request) {
@@ -68,7 +69,9 @@ public class ProductService implements IProductService {
 
     @Override
     public void deleteProductById(Long id) {
-        productRepository.findById(id).ifPresentOrElse(productRepository::delete, () -> {throw new ProductNotFoundException("Product not found");});
+        productRepository.findById(id)
+                .ifPresentOrElse(productRepository::delete,
+                        () -> {throw new ResourceNotFoundException("Product not found");});
     }
 
     @Override
