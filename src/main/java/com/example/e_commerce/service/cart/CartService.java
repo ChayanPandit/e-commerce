@@ -2,6 +2,7 @@ package com.example.e_commerce.service.cart;
 
 import com.example.e_commerce.exception.ResourceNotFoundException;
 import com.example.e_commerce.model.Cart;
+import com.example.e_commerce.model.User;
 import com.example.e_commerce.repository.CartItemRepository;
 import com.example.e_commerce.repository.CartRepository;
 import lombok.RequiredArgsConstructor;
@@ -48,11 +49,12 @@ public class CartService implements ICartService {
     }
 
     @Override
-    public Long initializeNewCart() {
+    public Cart initializeNewCart(User user) {
         Cart newCart = new Cart();
         Long newCartId = cartIdGenerator.incrementAndGet();
         newCart.setId(newCartId);
-        return cartRepository.save(newCart).getId();
+        newCart.setUser(user);
+        return cartRepository.save(newCart);
     }
 
 }
